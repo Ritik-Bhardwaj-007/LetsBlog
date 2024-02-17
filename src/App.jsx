@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 import authService from "./appwrite/auth"
 import './App.css'
 import { useEffect } from 'react';
+import { Footer, Header } from './components'
+import { logout,login } from './store/authSlice';
 
 function App() {
   const [loading,setLoading]=useState(true);
