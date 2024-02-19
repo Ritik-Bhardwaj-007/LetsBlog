@@ -5,6 +5,7 @@ import './App.css'
 import { useEffect } from 'react';
 import { Footer, Header } from './components'
 import { logout,login } from './store/authSlice';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   const [loading,setLoading]=useState(true);
@@ -27,7 +28,7 @@ function App() {
       <div className='w-full block'>
         <Header/>
         <main>
-          {/* <outlet/> */}
+          <Outlet/>
         </main>
         <Footer/>
       </div>

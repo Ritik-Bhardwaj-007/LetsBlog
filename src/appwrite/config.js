@@ -2,14 +2,14 @@ import { Account, Client, Databases, ID, Query, Storage } from "appwrite";
 import conf from "../conf/conf";
 
 export class Service {
-   client = new Client;
+   client = new Client();
    databases;
    bucket;
 
    constructor(){
     this.client.setEndpoint(conf.appwriteUrl)
     .setProject(conf.appwriteProjectId);
-    this.account= new Account(client);
+    // this.account= new Account(client);
     this.databases= new Databases(this.client);
     this.bucket= new Storage(this.client);
     
@@ -69,7 +69,6 @@ export class Service {
             conf.appwriteCollectionId,
             slug,
         )
-        return true;
     } catch (error) {
         console.log(error);
         return false;

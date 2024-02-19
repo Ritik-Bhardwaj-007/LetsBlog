@@ -7,18 +7,18 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 function PostForm({post}) {
-    const {register,handleSubmit,watch,setValue,control,getValues}= useform(
+    const {register,handleSubmit,watch,setValue,control,getValues} = useForm(
        { 
         defaultValues:{
-            title:  post?.title || '',
-            slug: post?.slug || '',
-            content: post?.content || '',
-            status: post?.status || 'active', 
+            title:  post?.title || "",
+            slug: post?.slug || "",
+            content: post?.content || "",
+            status: post?.status || "active", 
         }
     }
-    )
+    );
     const navigate = useNavigate();
-    const userData = useSelector(state=> state.user.userData);
+    const userData = useSelector(state=> state.auth.userData);
 
     const submit = async (data)=>{
         if(post){
@@ -37,7 +37,7 @@ function PostForm({post}) {
         }
         else{
             const file= await data.image[0] ? appwriteService.uploadFile(data.image[0]):null;
-            
+            console.log(file);
             if(file){
                 const fileId = file.$id;
                 data.featuredImage=fileId;
@@ -52,21 +52,22 @@ function PostForm({post}) {
         } 
     }
     const slugTransform= useCallback((value)=>{
-      if(value && typeof value ==='string')
+      if(value && typeof value ==="string")
       return value
       .trim()
       .toLowerCase()
-      .replace(/^[a-zA-Z\d\s]+/g,'-')
-      .replace(/\s/g,'-');
-      return '';
+      .replace(/[^a-zA-Z\d\s]+/g,"-")
+      .replace(/\s/g,"-");
+      return "";
     },[])
 
     useEffect(()=>{
        const subscription= watch((value,{name})=>{
-        if(name==='title'){
-            setValue('slug',slugTransform(value.title,{shouldValidate:true}))
+        if(name==="title"){
+            setValue("slug",slugTransform(value.title),{shouldValidate:true})
         }
        })
+       return () => subscription.unsubscribe();
     },[watch,slugTransform,setValue])
   return (
     <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
