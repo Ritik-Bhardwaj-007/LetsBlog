@@ -32,7 +32,10 @@ export class AuthService{
     }
     async getCurrentUser(){
         try {
-            return await this.account.get();
+            const data= await this.account.get();
+            console.log(data);
+            return data;
+            
         } catch (error) {
             console.log("Appwrite service:: getCurrentUser:: error",error);
         }

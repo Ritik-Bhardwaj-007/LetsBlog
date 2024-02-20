@@ -32,7 +32,6 @@ function App() {
         </main>
         <Footer/>
       </div>
-   test
     </div>
   ):null
 }

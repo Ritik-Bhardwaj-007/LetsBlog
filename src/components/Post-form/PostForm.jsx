@@ -1,7 +1,8 @@
-import React,{useCallback} from 'react';
+import React,{useCallback, useState} from 'react';
 import { useForm } from 'react-hook-form';
 import {Button,Input,Select,RTE} from '../index';
 import appwriteService from '../../appwrite/config';
+import appService from '../../appwrite/auth'
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -18,39 +19,48 @@ function PostForm({post}) {
     }
     );
     const navigate = useNavigate();
-    const userData = useSelector(state=> state.auth.userData);
+    const userData = useSelector((state) => {
+        console.log("Redux State:", state);
+        return state.auth.userData;
+      });
+      
+    // const [userData,setUserData]= useState(null);
+    // appService.getCurrentUser().then((user)=> {setUserData(user)});
+    console.log(userData)
+    const submit = async (data) => {
+        if (post) {
+            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
 
-    const submit = async (data)=>{
-        if(post){
-            const file= data.image[0] ? appwriteService.uploadFile(data.image[0]):null
-            if(file){
-                appwriteService.deleteFile(post.featuredImage)
+            if (file) {
+                appwriteService.deleteFile(post.featuredImage);
             }
-            const dbPost= await appwriteService.updatePost(post.$id,{
+
+            const dbPost = await appwriteService.updatePost(post.$id, {
                 ...data,
-                featuredImage: file? file.$id:undefined
-            })
-            if(dbPost){
-                navigate(`/post/${dbPost.$id}`)
+                featuredImage: file ? file.$id : undefined,
+            });
+
+            if (dbPost) {
+                navigate(`/post/${dbPost.$id}`);
             }
-           
-        }
-        else{
-            const file= await data.image[0] ? appwriteService.uploadFile(data.image[0]):null;
+        } else {
+            console.log(data.image[0]);
+            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]):null;
             console.log(file);
-            if(file){
+            console.log(userData);
+            if (file) {
                 const fileId = file.$id;
-                data.featuredImage=fileId;
-                const dbPost=await appwriteService.createPost({
-                    ...data,
-                    userId: userData.$id,
-                })
-                if(dbPost){
-                    navigate(`/post/${dbPost.$id}`)
+                data.featuredImage = fileId;
+                const dbPost = await appwriteService.createPost({ ...data, userId: userData?.$id });
+
+                if (dbPost) {
+                    navigate(`/post/${dbPost.$id}`);
                 }
+            }else{
+                console.log("Unable to upload file")
             }
-        } 
-    }
+        }
+    };
     const slugTransform= useCallback((value)=>{
       if(value && typeof value ==="string")
       return value

@@ -14,9 +14,10 @@ function Home() {
          appwriteService.getPosts().then((posts)=>{
             if(posts){
                 setPosts(posts.documents);
+                console.log(posts);
             }
         })
-    },[Curruser])
+    },[])
     if(Curruser===null) {
         return (
             <div className="w-full py-8 mt-4 text-center">
@@ -51,11 +52,12 @@ function Home() {
         <div className='w-full py-8'>
             <Container>
                 <div className='flex flex-wrap'>
-                    {posts.map((post) => (
-                        <div key={post.$id} className='p-2 w-1/4'>
+                    {posts.map((post) => {
+                        console.log(post);
+                        return (<div key={post.$id} className='p-2 w-1/4'>
                             <PostCard {...post} />
-                        </div>
-                    ))}
+                        </div>)
+                    })}
                 </div>
             </Container>
         </div>
