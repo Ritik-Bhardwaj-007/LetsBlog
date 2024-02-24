@@ -5,15 +5,17 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 function EditPost() {
-    const [post,setPost]=useState([]);
+    const [post,setPost]=useState({});
     const {slug}= useParams();
+    console.log(slug);
     const navigate= useNavigate();
 
     useEffect(()=>{
         if(slug){
             appwriteService.getPost(slug).then((post)=>{
                 if(post){
-                    setPosts(post);
+                    setPost({post});
+                    console.log(post);
                 }
             })
         }
@@ -24,7 +26,7 @@ function EditPost() {
   return post? (
     <div className='py-8'>
       <Container>
-        <PostForm post={post}/>
+        <PostForm {...post}/>
       </Container>
     </div>
   ):null

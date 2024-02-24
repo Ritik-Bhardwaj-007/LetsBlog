@@ -4,20 +4,24 @@ import { useState } from 'react';
 import { Container,PostCard } from '../components';
 import appwriteService from '../appwrite/config';
 import authService from '../appwrite/auth';
+import { useSelector } from 'react-redux';
 function Home() {
     const [Curruser,setCurrUser]=useState(null);
     const [posts,setPosts]= useState([]);
+    // const userData = useSelector((state) => state.auth.userData)
+    // setCurrUser(userData)
     useEffect(()=>{
         authService.getCurrentUser().then((user)=>{
-            setCurrUser(user);
-        });
-         appwriteService.getPosts().then((posts)=>{
-            if(posts){
-                setPosts(posts.documents);
-                console.log(posts);
-            }
-        })
-    },[])
+            console.log(`user updated : ${user}`);
+                setCurrUser(user);
+            });
+            appwriteService.getPosts().then((posts)=>{
+                if(posts){
+                    setPosts(posts.documents);
+                    console.log(posts);
+                }
+            })
+        },[])
     if(Curruser===null) {
         return (
             <div className="w-full py-8 mt-4 text-center">

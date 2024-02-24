@@ -27,6 +27,7 @@ function PostForm({post}) {
     // const [userData,setUserData]= useState(null);
     // appService.getCurrentUser().then((user)=> {setUserData(user)});
     console.log(userData)
+    console.log(post)
     const submit = async (data) => {
         if (post) {
             const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
@@ -84,13 +85,13 @@ function PostForm({post}) {
             <div className="w-2/3 px-2">
                 <Input
                     label="Title :"
-                    placeholder="Title"
+                    placeholder={post? post.title :"Title"}
                     className="mb-4"
                     {...register("title", { required: true })}
                 />
                 <Input
                     label="Slug :"
-                    placeholder="Slug"
+                    placeholder={post? post.$id: "Slug"}
                     className="mb-4"
                     {...register("slug", { required: true })}
                     onInput={(e) => {
@@ -107,15 +108,17 @@ function PostForm({post}) {
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", { required: !post })}
                 />
+                      {post && console.log(post.featuredImage)}
                 {post && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={appwriteService.getFilePreviewImage(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />
                     </div>
-                )}
+                )
+                }
                 <Select
                     options={["active", "inactive"]}
                     label="Status"
