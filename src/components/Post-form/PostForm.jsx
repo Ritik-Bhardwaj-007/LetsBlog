@@ -81,7 +81,7 @@ function PostForm({post}) {
        return () => subscription.unsubscribe();
     },[watch,slugTransform,setValue])
   return (
-    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
+    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap h-[72vh]">
             <div className="w-2/3 px-2">
                 <Input
                     label="Title :"

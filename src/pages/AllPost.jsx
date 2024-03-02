@@ -15,7 +15,7 @@ function AllPost() {
     },[]);
 
   return (
-    <div className='w-full py-8'>
+    <div className='w-full py-8 h-[65vh]'>
       <Container>
         <div className='flex flex-wrap'>
             {
