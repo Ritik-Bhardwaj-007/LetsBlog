@@ -21,8 +21,10 @@ function Login() {
                 console.log(userData);
                 if(userData) {
                     console.log("dispatched...");
-                    dispatch(authLogin({userData}));}
-                navigate("/")
+                    dispatch(authLogin({userData}));
+                    navigate("/")
+                }
+                else {setError("invalid Credentials")}
             }
         } catch (error) {
             setError(error.message)
