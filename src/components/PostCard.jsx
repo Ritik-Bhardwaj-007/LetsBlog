@@ -22,5 +22,5 @@ function PostCard({$id, title, featuredImage}) {
   )
 }
 
-
+// previous name changed
 export default PostCard
